@@ -3,8 +3,8 @@ require '../vendor/autoload.php';
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
+// ini_set('display_errors', 1);
+// error_reporting(E_ALL);
 
 $reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader('Xlsx');
 $reader->setReadDataOnly(TRUE);
@@ -31,7 +31,11 @@ for ($row = 2; $row <= $highestRow; ++$row) {
         
         $final_key = str_replace(' ', '', $key);
         $final_key =str_replace("\"",'_',$final_key);
-        $final_key = str_replace(array('(', ')', '{','}','\\','/','[',']','\'','<','>'), '_', $final_key);
+        $final_key = str_replace(
+        array('(', ')', '{','}','\\','/','[',']','\'',
+        '<','>','!','!','^','+','%','&','=','?','£','#','$','½','¾','|','`','´','~','¨')
+        , '_',
+        $final_key);
         
         $final_key = str_replace('&','*',$final_key);
 
