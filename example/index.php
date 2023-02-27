@@ -3,8 +3,8 @@ require '../vendor/autoload.php';
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
-// ini_set('display_errors', 1);
-// error_reporting(E_ALL);
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
 
 $reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader('Xlsx');
 $reader->setReadDataOnly(TRUE);
@@ -30,17 +30,23 @@ for ($row = 2; $row <= $highestRow; ++$row) {
         $key=$firstRow[$index];
         
         $final_key = str_replace(' ', '', $key);
-        $final_key = str_replace('(', '-', $final_key);
-        $final_key = str_replace(')', '-', $final_key);
-        $final_key = str_replace('&','*',$final_key);
-        $value= str_replace('&','*',$value);
+        $final_key =str_replace("\"",'_',$final_key);
+        $final_key = str_replace(array('(', ')', '{','}','\\','/','[',']','\'','<','>'), '_', $final_key);
         
+        $final_key = str_replace('&','*',$final_key);
+
+
+        
+        $value= str_replace('&','*',$value);
+        echo "$final_key";
         
         $book =$dom->createElement($final_key,$value);
+        
         $element->appendChild($book);
         
         
     }
+    
      $root->appendChild($element);
 }
 
