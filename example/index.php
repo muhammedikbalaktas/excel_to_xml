@@ -3,7 +3,8 @@ require '../vendor/autoload.php';
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
-
+// ini_set('display_errors', 1);
+// error_reporting(E_ALL);
 
 $reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader('Xlsx');
 $reader->setReadDataOnly(TRUE);
@@ -20,22 +21,25 @@ $highestColumnIndex = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::columnIndexFrom
 $root = $dom->createElement('books');
 $dom->appendChild($root);
 
-echo $firstRow[0];
+
 
 for ($row = 2; $row <= $highestRow; ++$row) {
     $element = $dom->createElement('book');
     for ($col = 1,$index=0; $col <= $highestColumnIndex; $col++,$index++) {
         $value = $worksheet->getCellByColumnAndRow($col, $row)->getValue();
         $key=$firstRow[$index];
-        $words = explode(" ", $key); // Split string by space
-
-        $first_word = $words[0];
-        $book =$dom->createElement("".$first_word,$value);
+        
+        $final_key = str_replace(' ', '', $key);
+        $final_key = str_replace('(', '-', $final_key);
+        $final_key = str_replace(')', '-', $final_key);
+        
+        
+        $book =$dom->createElement($final_key,$value);
         $element->appendChild($book);
         
         
     }
-    $root->appendChild($element);
+     $root->appendChild($element);
 }
 
 $dom->appendChild($root);
