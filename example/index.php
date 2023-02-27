@@ -32,6 +32,8 @@ for ($row = 2; $row <= $highestRow; ++$row) {
         $final_key = str_replace(' ', '', $key);
         $final_key = str_replace('(', '-', $final_key);
         $final_key = str_replace(')', '-', $final_key);
+        $final_key = str_replace('&','*',$final_key);
+        $value= str_replace('&','*',$value);
         
         
         $book =$dom->createElement($final_key,$value);
